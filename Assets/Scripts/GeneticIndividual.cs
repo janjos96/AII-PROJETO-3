@@ -18,22 +18,15 @@ public class GeneticIndividual : Individual {
 	public override void Crossover (Individual partner, float probability) //recombinação
 	{
 		float r = Random.Range (0.0f, 1.0f);
-		float temp1;
-		bool temp2;
+		//float temp1;
+		//bool temp2;
 		if (r < probability) {
-			int str = Random.Range (0, chromosome1.Length-1); //escolhe aleatoriamente o cromossoma inicial a ser alterado
-			int end = Random.Range (str+1, chromosome1.Length-str); //escolhe aleatoriamente o cromossoma final a ser alterado
-			for (int i = str; i < end-str; i++) {
+            int p1 = Random.Range (0, totalSize/2); //escolhe aleatoriamente o cromossoma inicial a ser alterado
+            int p2 = Random.Range (p1+1, totalSize); //escolhe aleatoriamente o cromossoma final a ser alterado
+			for (int i = p1; i < p2-p1; i++) {
 
-				//CHROMOSOME 1 ----
-				temp1 = horizontalMoves [i];
-				horizontalMoves [i] = partner.horizontalMoves [i];
-				partner.horizontalMoves [i] = temp1; //altera os cromossomas escolhidos de forma a = ao do outro pai
+                genotype[i] = partner.genotype[i];
 
-				//CHROMOSOME 2 ----
-				temp2 = shots [i];
-				shots [i] = partner.shots [i];
-				partner.shots [i] = temp2;
 			}
 		}
 	}
@@ -59,3 +52,36 @@ public class GeneticIndividual : Individual {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                /*//CHROMOSOME 1 ----
+                temp1 = horizontalMoves[i];
+                horizontalMoves[i] = partner.horizontalMoves[i];
+                partner.horizontalMoves[i] = temp1; //altera os cromossomas escolhidos de forma a = ao do outro pai
+
+                //CHROMOSOME 2 ----
+                temp2 = shots[i];
+                shots[i] = partner.shots[i];
+                partner.shots[i] = temp2;*/

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Individual {
 
-	protected float[] genotype;
+	public float[] genotype;
 	protected int[] topology;
 
 	protected int totalSize = 1;
