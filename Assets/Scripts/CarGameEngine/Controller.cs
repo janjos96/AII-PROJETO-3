@@ -54,7 +54,7 @@ public class Controller : MonoBehaviour
 	private void FixedUpdate()
 	{
 		if (running) {
-			Time.timeScale = 6;	
+			Time.timeScale = 10;	
 			// updating sensors
 			SensorHandling ();
 

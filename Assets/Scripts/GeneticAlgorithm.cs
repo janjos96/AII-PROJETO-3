@@ -30,29 +30,28 @@ public class GeneticAlgorithm : MetaHeuristic
     {
         //You should implement the code runs in each generation here
         List<Individual> new_pop = new List<Individual>();
+        List<Individual> parents = new List<Individual>();
 
         updateReport(); //called to get some stats
                         // fills the rest with mutations of the best !
 
         //elitismo
-        if (elitist)
-        {
-            //associa o melhor inidividuo
-            bestIndividual = GenerationBest.Clone();
-        }
+      
 
-
-        new_pop = selection.selectIndividuals(population, populationSize);
+        parents = selection.selectIndividuals(population, populationSize * 2);
 
         //crossover -> atenção a população ímpar!
-        for (int i = 0; i < populationSize; i += 2)
+        int j = 0;
+        for (int i = 0; i < populationSize * 2; i += 2)
         {
-            new_pop[i].Crossover(new_pop[i + 1], crossoverProbability);
+            parents[i].Crossover(parents[i + 1], crossoverProbability);
+            new_pop.Add(parents[j]);
+            j++;
             //newPopulation [i].Crossover (newPopulation [i + 1], crossoverProbability);
         }
 
         //mutation
-        for (int i = 0; i < populationSize; i += 2)
+        for (int i = 0; i < populationSize; i++)
         {
             new_pop[i].Mutate(mutationProbability);
         }
@@ -63,7 +62,7 @@ public class GeneticAlgorithm : MetaHeuristic
         //troca a primeira posição da nova população pelo melhor individuo da geração anterior
         if (elitist)
         {
-            population[0] = bestIndividual;
+            population[0] = GenerationBest.Clone();
         }
 
         generation++;

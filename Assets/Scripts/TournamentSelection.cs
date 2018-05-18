@@ -42,24 +42,18 @@ public class TournamentSelection : SelectionMethod
             selectedIndsForTournament.Add(ind); //adiciona um clone desse individuo à lista
                                                 //we return copies of the selected individuals
         }
-
+        bestOfTournament = selectedIndsForTournament[0];
         //Ver o melhor, consoante o fitness
-        for (int i = 0; i < selectedIndsForTournament.Count; i++)
+        for (int i = 1; i < selectedIndsForTournament.Count; i++)
         {
-            if (i == 0)
+           
+            if (selectedIndsForTournament[i].Fitness > bestOfTournament.Fitness)
             {
                 bestOfTournament = selectedIndsForTournament[i];
             }
-            else
-            {
-                if (selectedIndsForTournament[i].Fitness > bestOfTournament.Fitness)
-                {
-                    bestOfTournament = selectedIndsForTournament[i];
-                }
-            }
         }
 
-        return bestOfTournament;
+        return bestOfTournament.Clone();
     }
 
     public Individual GenerationBest(Individual[] tournamentSize)
