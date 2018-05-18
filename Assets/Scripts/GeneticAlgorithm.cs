@@ -1,64 +1,73 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneticAlgorithm : MetaHeuristic {
-	public float mutationProbability;
-	public float crossoverProbability;
-	public int tournamentSize;
-	public bool elitist;
+public class GeneticAlgorithm : MetaHeuristic
+{
+    public float mutationProbability;
+    public float crossoverProbability;
+    public int tournamentSize;
+    public bool elitist;
 
-    protected SelectionMethod 
+    private Individual bestIndividual;
 
-    void Start()
+    public override void InitPopulation()
     {
-        generation = 0;
+        population = new List<Individual>();
 
-            selection = new TournamentSelection(2);
-       
+        selection = new TournamentSelection(tournamentSize);
+        // jncor 
+        while (population.Count < populationSize)
+        {
+            GeneticIndividual new_ind = new GeneticIndividual(topology);
+            new_ind.Initialize();
+            population.Add(new_ind);
+        }
+
     }
 
-	public override void InitPopulation () {
-		population = new List<Individual> ();
+    //The Step function assumes that the fitness values of all the individuals in the population have been calculated.
+    public override void Step()
+    {
+        //You should implement the code runs in each generation here
+        List<Individual> new_pop = new List<Individual>();
 
-		// jncor 
-		while (population.Count < populationSize) {
-            GeneticIndividual new_ind= new GeneticIndividual (topology);
-			new_ind.Initialize ();
-			population.Add (new_ind);
-		}
+        updateReport(); //called to get some stats
+                        // fills the rest with mutations of the best !
 
-	}
+        //elitismo
+        if (elitist)
+        {
+            //associa o melhor inidividuo
+            bestIndividual = GenerationBest.Clone();
+        }
 
-	//The Step function assumes that the fitness values of all the individuals in the population have been calculated.
-	public override void Step() {
-		//You should implement the code runs in each generation here
-		List<Individual> new_pop = new List<Individual> ();
-        List<Individual> temp_pop = new List<Individual>();
 
-		updateReport (); //called to get some stats
-		// fills the rest with mutations of the best !
+        new_pop = selection.selectIndividuals(population, populationSize);
 
-		for (int i = 0; i < populationSize ; i++) {
+        //crossover -> atenção a população ímpar!
+        for (int i = 0; i < populationSize; i += 2)
+        {
+            new_pop[i].Crossover(new_pop[i + 1], crossoverProbability);
+            //newPopulation [i].Crossover (newPopulation [i + 1], crossoverProbability);
+        }
 
-            temp_pop = selection.tournamente 
+        //mutation
+        for (int i = 0; i < populationSize; i += 2)
+        {
+            new_pop[i].Mutate(mutationProbability);
+        }
 
-            Debug.Log("2");
+        //população passa a ter os descendentes
+        population = new_pop;
 
-            Individual ind1 = temp_pop[0];
-            Individual ind2 = temp_pop[1];
+        //troca a primeira posição da nova população pelo melhor individuo da geração anterior
+        if (elitist)
+        {
+            population[0] = bestIndividual;
+        }
 
-            ind1.Crossover(ind2, crossoverProbability);
-
-            ind1.Mutate (mutationProbability);
-
-            new_pop.Add(ind1);
-			
-		}
-
-		population = new_pop;
-
-		generation++;
-	}
+        generation++;
+    }
 
 }
+

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 public class TournamentSelection : SelectionMethod
 {
-    private int tournamentS;
+    private int tournamentSize;
     private Individual bestOfTournament;
 
-    public TournamentSelection(int tournamentSize) : base()
+    public TournamentSelection(int tournamentS)
     {   //n de torneios = variavel a definir no programa
-        tournamentS = tournamentSize;
+        tournamentSize = tournamentS;
     }
 
 
@@ -19,14 +19,14 @@ public class TournamentSelection : SelectionMethod
 
         for (int i = 0; i < num; i++)
         {   //Para cada torneio:
-            selectedIndsByTournaments.Add(tournamentSelection(oldpop, tournamentS).Clone());    //adiciona à lista o individuo 'vencedor' desse torneio
+            selectedIndsByTournaments.Add(tournamentSelection(oldpop, tournamentSize).Clone());    //adiciona à lista o individuo 'vencedor' desse torneio
         }
 
         return selectedIndsByTournaments;
     }
 
 
-    Individual tournamentSelection(List<Individual> oldpop, int tournamentS)
+    public Individual tournamentSelection(List<Individual> oldpop, int tournamentS)
     { //TORNEIO, DEVOLVE O MELHOR
 
         List<Individual> selectedIndsForTournament = new List<Individual>(); //lista de individuos selecionados para o torneio
@@ -44,22 +44,38 @@ public class TournamentSelection : SelectionMethod
         }
 
         //Ver o melhor, consoante o fitness
-        for (int b = 0; b < selectedIndsForTournament.Count; b++)
+        for (int i = 0; i < selectedIndsForTournament.Count; i++)
         {
-            if (b == 0)
+            if (i == 0)
             {
-                bestOfTournament = selectedIndsForTournament[b];
+                bestOfTournament = selectedIndsForTournament[i];
             }
             else
             {
-                if (selectedIndsForTournament[b].Fitness > bestOfTournament.Fitness)
+                if (selectedIndsForTournament[i].Fitness > bestOfTournament.Fitness)
                 {
-                    bestOfTournament = selectedIndsForTournament[b];
+                    bestOfTournament = selectedIndsForTournament[i];
                 }
             }
         }
 
         return bestOfTournament;
+    }
+
+    public Individual GenerationBest(Individual[] tournamentSize)
+    {
+        float max = float.MinValue;
+        Individual max_ind = null;
+        foreach (Individual indiv in tournamentSize)
+        {
+            if (indiv.Fitness > max)
+            {
+                max = indiv.Fitness;
+                max_ind = indiv;
+            }
+        }
+        return max_ind;
+
     }
 
 }

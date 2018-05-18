@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed4542b128da440e8b6b5a64d24ac721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationSize: 1
+  populationSize: 24
   topology: 030000000a00000002000000
   numGenerations: 25
   generation: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   mutationProbability: 0.3
   crossoverProbability: 0.5
   tournamentSize: 2
-  elitist: 0
+  elitist: 1
 --- !u!1 &388778777
 GameObject:
   m_ObjectHideFlags: 0
