@@ -144,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   infoText: {fileID: 1899382089}
   simulating: 0
-  simulationPrefab: {fileID: 1123249786310642, guid: 709cd924596df4c9383a3af6f9801dcf,
+  simulationPrefab: {fileID: 1869238661752000, guid: cacb93a730f1c463ba785707308c114c,
     type: 2}
   nSims: 20
   seed: 42
@@ -198,6 +198,7 @@ MonoBehaviour:
   crossoverProbability: 0.8
   tournamentSize: 8
   elitist: 1
+  elitistNum: 0
 --- !u!1 &388778777
 GameObject:
   m_ObjectHideFlags: 0

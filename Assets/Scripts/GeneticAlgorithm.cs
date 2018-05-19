@@ -7,6 +7,7 @@ public class GeneticAlgorithm : MetaHeuristic
     public float crossoverProbability;
     public int tournamentSize;
     public bool elitist;
+    public int elitistNum;
 
     private Individual bestIndividual;
 
@@ -62,7 +63,9 @@ public class GeneticAlgorithm : MetaHeuristic
         //troca a primeira posição da nova população pelo melhor individuo da geração anterior
         if (elitist)
         {
-            population[0] = GenerationBest.Clone();
+            for(int i = 0; i < elitistNum; i++) {
+                population[i] = GenerationBest.Clone();
+            }
         }
 
         generation++;
