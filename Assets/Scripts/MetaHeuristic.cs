@@ -15,7 +15,7 @@ public abstract class MetaHeuristic : MonoBehaviour
 
 	protected List<Individual> population;
 	protected int evaluatedIndividuals;
-	protected string report = "Generation,PopBest,PopAvg,BestOverall\n";
+	protected string report = "Generation,PopBest,PopWorst,PopAvg,StdDeviation,BestOverall\n";
 	protected string best = "";
 	protected SelectionMethod selection;
 
@@ -47,6 +47,24 @@ public abstract class MetaHeuristic : MonoBehaviour
 		}
 	}
 
+    public Individual GenerationWorst
+    {
+        get
+        {
+            float min = float.MaxValue;
+            Individual min_ind = null;
+            foreach (Individual indiv in population)
+            {
+                if (indiv.Fitness < min)
+                {
+                    min = indiv.Fitness;
+                    min_ind = indiv;
+                }
+            }
+            return min_ind;
+        }
+    }
+
 	public float PopAvg
 	{
 		get
@@ -58,6 +76,19 @@ public abstract class MetaHeuristic : MonoBehaviour
 			return (sum / populationSize);
 		}
 	}
+
+    public float StdDeviation
+    {
+        get
+        {
+            float sum = 0.0f;
+            foreach (Individual indiv in population)
+            {
+                sum += Mathf.Pow(indiv.Fitness-PopAvg, 2);
+            }
+            return (Mathf.Sqrt(sum / populationSize));
+        }
+    }
 
 	void Start()
 	{
@@ -75,8 +106,9 @@ public abstract class MetaHeuristic : MonoBehaviour
 			overallBest = GenerationBest.Clone();
 		}
 		float populationBest = GenerationBest.Fitness;
+        float populationWorst = GenerationWorst.Fitness;
 		best = overallBest.ToString();
-		report +=  string.Format("{0},{1},{2},{3}\n", generation,populationBest, PopAvg, overallBest.Fitness);
+        report +=  string.Format("{0},{1},{2},{3},{4},{5}\n", generation,populationBest, populationWorst, PopAvg, StdDeviation, overallBest.Fitness);
 		Debug.Log (best);
 		Debug.Log (report);
 	}
